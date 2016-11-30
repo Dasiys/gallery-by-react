@@ -33,6 +33,7 @@ html,body{
 			background-color:#fff;
 			box-sizing:border-box;
 			transform-style:preserve-3d;
+			transition:left .6s ease-in-out,top .6s ease-in-out;
 			&.is-inverse{
 				transform:rotateY(180deg);
 				img{
