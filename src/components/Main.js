@@ -41,6 +41,7 @@ class AppComponent extends React.Component {
                 //         top:'0'
                 //     }，
                 //     rotate:0 //旋转角度
+                //     isInverse:false // 图片正反面判断,false正面
                 // }
             ]
         };
@@ -98,7 +99,8 @@ class AppComponent extends React.Component {
                     top:getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
                     left:getRangeRandom(vPosRangeX[0],vPosRangeX[1])
                 },
-                rotate:get30DegRandom()
+                rotate:get30DegRandom(),
+                isInverse:false
             };
         });
 
@@ -133,6 +135,22 @@ class AppComponent extends React.Component {
         this.setState({
             imgsArrangeArr:imgsArrangeArr
         });
+    }
+    /*
+    * 翻转图片
+    * @param index 输入当前被执行inverse操作的图片对应的图片信息数组的index值
+    * @return {function}这是一个闭包函数，其内return一个真正待被执行的函数
+    * 闭包:能够读取其他函数内部变量的函数
+    */
+    inverse(index){
+        return function(){
+            var imgsArrangeArr=this.state.imgsArrangeArr;
+            imgsArrangeArr[index].isInverse=!imgsArrangeArr[index].isInverse;
+            this.setState({
+                imgsArrangeArr:imgsArrangeArr
+            });
+        }.bind(this);
+
     }
     componentDidMount(){
         // 首先拿到舞台的大小
@@ -185,7 +203,7 @@ class AppComponent extends React.Component {
                     rotate:0
                 }
             }
-           imgFigures.push(<ImageFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]}/>);
+           imgFigures.push(<ImageFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}/>);
         });
         return (
          <section className="stage" ref="stage">
@@ -201,6 +219,18 @@ class AppComponent extends React.Component {
 }
 // 组件加载以后为每张图片其位置的范围
 class ImageFigure extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    /*
+    * ImageFigure的click函数
+    */
+    handleClick(e){
+        console.log(this);
+        this.props.inverse();
+        e.stopPropagation();
+        e.preventDefault();
+    }
     render(){
         var styleObj={};
 
@@ -215,11 +245,14 @@ class ImageFigure extends React.Component{
             });
             
         }
+        var imgFigureClassName='img-figure';
+        imgFigureClassName+=this.props.arrange.isInverse?' is-inverse':'';
         return(
-            <figure className="img-figure" style={styleObj}>
+            <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick.bind(this)}>
                 <img src={this.props.data.imageURL} alt={this.props.data.title} />
                 <figcaption>
                     <h2 className="img-title">{this.props.data.title}</h2>
+                    <div className="img-back" onClick={this.handleClick.bind(this)}><p>{this.props.data.desc}</p></div>
                 </figcaption>
             </figure>
         );
