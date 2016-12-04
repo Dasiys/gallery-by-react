@@ -1,8 +1,8 @@
 @font-face{
-	font-family:"icons-turn";
-	src:url("../fonts/icons/turn.eot") format("embedded-opentype"),
-		url("../fonts/icons/turn.woff") format("woff"),url("../fonts/icons/turn.ttf") format("truetype"),
-		url("../fonts/icons/turn.svg") format("svg");
+	font-family:'icons-turn';
+	src:url('../fonts/icons/icomoon.eot') format('embedded-opentype'),
+		url('../fonts/icons/icomoon.woff') format('woff'),url('../fonts/icons/icomoon.ttf') format('truetype'),
+		url('../fonts/icons/icomoon.svg') format('svg');
 }
 html,body{
 	background-color:#222;
@@ -103,11 +103,11 @@ html,body{
 				transform:scale(1);
 				background-color:#888; // Icon Font 用字体图片 翻转
 				&::after{
-					font-family:"icons-turn";
-					content:"\e600";
+					font-family:'icons-turn';
+					content:'\e965';
 					color:#fff;
 					line-height:30px;
-					vertical-align:middle;
+					vertical-align:25%;
 					-webkit-font-smoothing:antialiased;
 					font-size:80%;
 				}
